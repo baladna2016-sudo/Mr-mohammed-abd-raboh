@@ -35,7 +35,7 @@ export default function Vision({ items }: { items: VisionGoal[] }) {
           </h2>
 
           <blockquote className="relative font-cairo text-xl md:text-2xl font-medium text-white leading-relaxed max-w-3xl mx-auto">
-            <span className="text-5xl text-white/20 absolute -top-4 -right-2 leading-none">"</span>
+            <span className="text-5xl text-white/20 absolute -top-4 -right-2 leading-none">&quot;</span>
             {vision.goal_statement}
           </blockquote>
 
