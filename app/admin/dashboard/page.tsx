@@ -11,7 +11,6 @@ import { db } from '@/lib/firebase';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 
-// تعريف الأنواع (Types) بناءً على بياناتك
 export type HeroSettings = { id?: string; name?: string; title?: string; tagline?: string; avatar_url?: string; bio?: string; updated_at?: string };
 export type Qualification = { id: string; title: string; degree?: string; department?: string; description?: string; display_order?: number };
 export type Skill = { id: string; title: string; category?: string; icon_name?: string; display_order?: number };
@@ -31,11 +30,9 @@ function DashboardContent() {
   const [visionGoals, setVisionGoals] = useState<VisionGoal[]>([]);
   const [messages, setMessages] = useState<Message[]>([]);
 
-  // جلب كافة البيانات من Firestore
   const fetchAll = useCallback(async () => {
     setLoading(true);
     try {
-      // 1. Hero Settings
       const heroSnapshot = await getDocs(collection(db, 'hero_settings'));
       if (!heroSnapshot.empty) {
         const heroData = { id: heroSnapshot.docs[0].id, ...heroSnapshot.docs[0].data() } as HeroSettings;
@@ -44,27 +41,22 @@ function DashboardContent() {
         setHero(null);
       }
 
-      // 2. Qualifications
       const qualQuery = query(collection(db, 'qualifications'), orderBy('display_order', 'asc'));
       const qualSnapshot = await getDocs(qualQuery);
       setQualifications(qualSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Qualification[]);
 
-      // 3. Skills
       const skillsQuery = query(collection(db, 'skills'), orderBy('display_order', 'asc'));
       const skillsSnapshot = await getDocs(skillsQuery);
       setSkills(skillsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Skill[]);
 
-      // 4. Projects
       const projectsQuery = query(collection(db, 'projects'), orderBy('display_order', 'asc'));
       const projectsSnapshot = await getDocs(projectsQuery);
       setProjects(projectsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Project[]);
 
-      // 5. Vision Goals
       const visionQuery = query(collection(db, 'vision_goals'), orderBy('display_order', 'asc'));
       const visionSnapshot = await getDocs(visionQuery);
       setVisionGoals(visionSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as VisionGoal[]);
 
-      // 6. Messages
       const msgQuery = query(collection(db, 'messages'), orderBy('created_at', 'desc'));
       const msgSnapshot = await getDocs(msgQuery);
       setMessages(msgSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Message[]);
@@ -82,13 +74,12 @@ function DashboardContent() {
 
   const unreadCount = messages.filter((m) => !m.is_read).length;
 
-  // دوال الحفظ والحذف للمؤهلات
-  const handleSaveQualifications = async (data: Record<string, unknown>, id?: string) => {
+  const handleSaveQualifications = async (data: any, id?: string) => {
     if (id) {
-      await updateDoc(doc(db, 'qualifications', id), data);
+      await updateDoc(doc(db, 'qualifications', id), data as any);
       toast({ title: 'تم تحديث المؤهل' });
     } else {
-      await addDoc(collection(db, 'qualifications'), data);
+      await addDoc(collection(db, 'qualifications'), data as any);
       toast({ title: 'تمت إضافة المؤهل' });
     }
     fetchAll();
@@ -104,13 +95,12 @@ function DashboardContent() {
     }
   };
 
-  // دوال الحفظ والحذف للمهارات
-  const handleSaveSkills = async (data: Record<string, unknown>, id?: string) => {
+  const handleSaveSkills = async (data: any, id?: string) => {
     if (id) {
-      await updateDoc(doc(db, 'skills', id), data);
+      await updateDoc(doc(db, 'skills', id), data as any);
       toast({ title: 'تم تحديث المهارة' });
     } else {
-      await addDoc(collection(db, 'skills'), data);
+      await addDoc(collection(db, 'skills'), data as any);
       toast({ title: 'تمت إضافة المهارة' });
     }
     fetchAll();
@@ -126,13 +116,12 @@ function DashboardContent() {
     }
   };
 
-  // دوال الحفظ والحذف للمشروعات
-  const handleSaveProjects = async (data: Record<string, unknown>, id?: string) => {
+  const handleSaveProjects = async (data: any, id?: string) => {
     if (id) {
-      await updateDoc(doc(db, 'projects', id), data);
+      await updateDoc(doc(db, 'projects', id), data as any);
       toast({ title: 'تم تحديث المشروع' });
     } else {
-      await addDoc(collection(db, 'projects'), data);
+      await addDoc(collection(db, 'projects'), data as any);
       toast({ title: 'تمت إضافة المشروع' });
     }
     fetchAll();
@@ -148,13 +137,12 @@ function DashboardContent() {
     }
   };
 
-  // دوال الرؤية والأهداف
-  const handleSaveVision = async (data: Record<string, unknown>, id?: string) => {
+  const handleSaveVision = async (data: any, id?: string) => {
     if (id) {
-      await updateDoc(doc(db, 'vision_goals', id), data);
+      await updateDoc(doc(db, 'vision_goals', id), data as any);
       toast({ title: 'تم تحديث الرؤية' });
     } else {
-      await addDoc(collection(db, 'vision_goals'), data);
+      await addDoc(collection(db, 'vision_goals'), data as any);
       toast({ title: 'تمت إضافة الرؤية' });
     }
     fetchAll();
@@ -170,7 +158,6 @@ function DashboardContent() {
     }
   };
 
-  // دوال الرسائل
   const handleDeleteMessage = async (id: string) => {
     try {
       await deleteDoc(doc(db, 'messages', id));
@@ -183,7 +170,7 @@ function DashboardContent() {
 
   const handleToggleRead = async (msg: Message) => {
     try {
-      await updateDoc(doc(db, 'messages', msg.id), { is_read: !msg.is_read });
+      await updateDoc(doc(db, 'messages', msg.id), { is_read: !msg.is_read } as any);
       fetchAll();
     } catch {
       toast({ title: 'فشل التحديث', variant: 'destructive' });
@@ -212,9 +199,7 @@ function DashboardContent() {
 
   const visionColumns: CrudColumn[] = [
     { key: 'goal_statement', label: 'البيان' },
-    { key: 'keywords_array', label: 'الكلمات', render: (row) => (
-      <span className="text-xs">{(row.keywords_array as string[])?.join(' • ')}</span>
-    ) },
+    { key: 'keywords_array', label: 'الكلمات' },
   ];
 
   const renderOverview = () => {
@@ -315,7 +300,7 @@ function DashboardContent() {
           fields={[
             { key: 'title', label: 'المهارة', type: 'text', required: true },
             { key: 'category', label: 'التصنيف', type: 'text' },
-            { key: 'icon_name', label: 'اسم الأيقونة (Lucide)', type: 'text', placeholder: 'BrainCircuit', dir: 'ltr' },
+            { key: 'icon_name', label: 'اسم الأيقونة (Lucide)', type: 'text' },
             { key: 'display_order', label: 'ترتيب العرض', type: 'number' },
           ]}
           rows={skills as unknown as Record<string, unknown>[]}
@@ -334,8 +319,8 @@ function DashboardContent() {
             { key: 'title', label: 'العنوان', type: 'text', required: true },
             { key: 'description', label: 'الوصف', type: 'textarea' },
             { key: 'category', label: 'التصنيف', type: 'text' },
-            { key: 'project_url', label: 'رابط المشروع', type: 'text', dir: 'ltr' },
-            { key: 'image_url', label: 'رابط الصورة', type: 'text', dir: 'ltr' },
+            { key: 'project_url', label: 'رابط المشروع', type: 'text' },
+            { key: 'image_url', label: 'رابط الصورة', type: 'text' },
             { key: 'display_order', label: 'ترتيب العرض', type: 'number' },
           ]}
           rows={projects as unknown as Record<string, unknown>[]}
@@ -352,7 +337,7 @@ function DashboardContent() {
           columns={visionColumns}
           fields={[
             { key: 'goal_statement', label: 'بيان الرؤية', type: 'textarea', required: true },
-            { key: 'keywords_array', label: 'الكلمات المفتاحية (افصل بفاصلة)', type: 'array' },
+            { key: 'keywords_array', label: 'الكلمات المفتاحية (افصل بفاصلة)', type: 'text' },
             { key: 'display_order', label: 'ترتيب العرض', type: 'number' },
           ]}
           rows={visionGoals as unknown as Record<string, unknown>[]}
@@ -402,7 +387,6 @@ function DashboardContent() {
                       <button
                         onClick={() => handleToggleRead(msg)}
                         className="p-2 rounded-lg hover:bg-secondary text-muted-foreground transition-colors"
-                        title={msg.is_read ? 'وضع كغير مقروء' : 'وضع كمقروء'}
                       >
                         <Eye className="w-4 h-4" />
                       </button>
@@ -410,7 +394,7 @@ function DashboardContent() {
                         onClick={() => handleDeleteMessage(msg.id)}
                         className="p-2 rounded-lg hover:bg-destructive/10 text-destructive transition-colors"
                       >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3" /></svg>
+                        حذف
                       </button>
                     </div>
                   </div>

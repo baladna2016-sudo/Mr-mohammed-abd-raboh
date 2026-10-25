@@ -8,6 +8,15 @@ import { db } from '@/lib/firebase';
 import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
+type HeroSettings = {
+  id?: string;
+  name?: string;
+  title?: string;
+  tagline?: string;
+  avatar_url?: string;
+  bio?: string;
+};
+
 export default function HeroEditor({
   hero,
   loading,
@@ -30,7 +39,6 @@ export default function HeroEditor({
     bio: hero?.bio ?? '',
   });
 
-  // Sync when hero loads
   const currentKey = hero?.id ?? '';
   const [syncedKey, setSyncedKey] = useState('');
   if (currentKey && currentKey !== syncedKey) {
@@ -49,13 +57,11 @@ export default function HeroEditor({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // تحقق من نوع الملف
     if (!file.type.startsWith('image/')) {
       toast({ title: 'يجب اختيار صورة فقط', variant: 'destructive' });
       return;
     }
 
-    // معاينة فورية
     const localPreview = URL.createObjectURL(file);
     setPreview(localPreview);
 
@@ -73,7 +79,6 @@ export default function HeroEditor({
     } catch (error) {
       console.error(error);
       toast({ title: 'فشل رفع الصورة', description: 'تأكد من تفعيل Storage في Firebase', variant: 'destructive' });
-      // fallback: استخدم base64 لو Storage مش مفعل
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64 = reader.result as string;
@@ -133,7 +138,6 @@ export default function HeroEditor({
         onSubmit={handleSave}
         className="space-y-5 max-w-2xl"
       >
-        {/* معاينة + رفع */}
         <div className="p-4 rounded-xl bg-secondary/50 border border-border">
           <label className="block text-sm font-medium text-foreground mb-3">الصورة الرمزية</label>
           

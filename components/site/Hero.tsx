@@ -4,6 +4,13 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { ArrowLeft, Sparkles, FolderGit2 } from 'lucide-react';
 
+type HeroSettings = {
+  name?: string;
+  title?: string;
+  tagline?: string;
+  avatar_url?: string;
+  bio?: string;
+};
 
 export default function Hero({ hero }: { hero: HeroSettings | null }) {
   const name = hero?.name || 'الأستاذ محمد عبدربه شقراني سليمان';
@@ -14,14 +21,12 @@ export default function Hero({ hero }: { hero: HeroSettings | null }) {
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden bg-hero-pattern pt-20">
-      {/* Decorative grid + glow */}
       <div className="absolute inset-0 bg-grid opacity-20" />
       <div className="absolute top-1/4 -right-32 w-96 h-96 rounded-full bg-primary/20 blur-3xl animate-float" />
       <div className="absolute bottom-1/4 -left-32 w-96 h-96 rounded-full bg-accent/20 blur-3xl animate-float" style={{ animationDelay: '2s' }} />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Text content */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -90,7 +95,6 @@ export default function Hero({ hero }: { hero: HeroSettings | null }) {
             </motion.div>
           </motion.div>
 
-          {/* Avatar */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -98,14 +102,11 @@ export default function Hero({ hero }: { hero: HeroSettings | null }) {
             className="flex justify-center order-1 lg:order-2"
           >
             <div className="relative">
-              {/* Pulsing rings */}
               <div className="absolute inset-0 rounded-full border-2 border-primary/30 animate-pulse-ring" style={{ animationDelay: '0s' }} />
               <div className="absolute inset-0 rounded-full border-2 border-accent/30 animate-pulse-ring" style={{ animationDelay: '1s' }} />
 
-              {/* Glow */}
               <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-primary/30 to-accent/30 blur-2xl" />
 
-              {/* Avatar circle */}
               <div className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden border-4 border-white/20 shadow-2xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
@@ -115,7 +116,6 @@ export default function Hero({ hero }: { hero: HeroSettings | null }) {
                 />
               </div>
 
-              {/* Floating badges */}
               <motion.div
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
@@ -135,7 +135,6 @@ export default function Hero({ hero }: { hero: HeroSettings | null }) {
         </div>
       </div>
 
-      {/* Scroll indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

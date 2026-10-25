@@ -4,6 +4,14 @@ import { motion } from 'framer-motion';
 import { GraduationCap, Briefcase } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 
+type Qualification = {
+  id: string;
+  title: string;
+  degree?: string;
+  department?: string;
+  description?: string;
+};
+
 export default function Qualifications({ items }: { items: Qualification[] }) {
   return (
     <section id="qualifications" className="py-20 md:py-28 bg-background">
@@ -15,7 +23,6 @@ export default function Qualifications({ items }: { items: Qualification[] }) {
         />
 
         <div className="relative mt-14">
-          {/* Timeline line */}
           <div className="absolute top-0 bottom-0 right-4 md:right-1/2 md:translate-x-1/2 w-0.5 bg-gradient-to-b from-primary via-accent to-transparent" />
 
           <div className="space-y-8">
@@ -30,10 +37,8 @@ export default function Qualifications({ items }: { items: Qualification[] }) {
                   idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                 }`}
               >
-                {/* Timeline dot */}
                 <div className="absolute right-4 md:right-1/2 top-6 md:translate-x-1/2 w-4 h-4 rounded-full bg-gradient-to-br from-primary to-accent ring-4 ring-background shadow-lg z-10" />
 
-                {/* Card */}
                 <div className="md:w-1/2 pr-12 md:pr-0 md:px-8">
                   <div className="group p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-xl hover:border-primary/30 transition-all">
                     <div className="flex items-start gap-4">

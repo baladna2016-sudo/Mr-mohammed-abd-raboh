@@ -3,6 +3,10 @@
 import { motion } from 'framer-motion';
 import { Target, Sparkles } from 'lucide-react';
 
+type VisionGoal = {
+  goal_statement: string;
+  keywords_array?: string[];
+};
 
 export default function Vision({ items }: { items: VisionGoal[] }) {
   if (!items || items.length === 0) return null;
@@ -10,7 +14,6 @@ export default function Vision({ items }: { items: VisionGoal[] }) {
 
   return (
     <section id="vision" className="py-20 md:py-28 relative overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-primary/90 to-accent/80" />
       <div className="absolute inset-0 bg-grid opacity-10" />
       <div className="absolute -top-32 -right-32 w-96 h-96 rounded-full bg-white/10 blur-3xl" />

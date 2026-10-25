@@ -6,6 +6,13 @@ import type { LucideIcon } from 'lucide-react';
 
 import SectionHeading from './SectionHeading';
 
+type Skill = {
+  id: string;
+  title: string;
+  category?: string;
+  icon_name?: string;
+};
+
 export default function Skills({ skills }: { skills: Skill[] }) {
   return (
     <section id="skills" className="py-20 md:py-28 bg-gradient-to-b from-secondary/30 to-background">
@@ -29,7 +36,6 @@ export default function Skills({ skills }: { skills: Skill[] }) {
                 whileHover={{ y: -6 }}
                 className="group relative p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-xl hover:border-primary/40 transition-all overflow-hidden"
               >
-                {/* Hover gradient glow */}
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/5 group-hover:to-accent/5 transition-all" />
 
                 <div className="relative flex items-start gap-4">
@@ -46,7 +52,6 @@ export default function Skills({ skills }: { skills: Skill[] }) {
                   </div>
                 </div>
 
-                {/* Bottom accent bar */}
                 <div className="absolute bottom-0 inset-x-0 h-1 bg-gradient-to-l from-primary to-accent scale-x-0 group-hover:scale-x-100 transition-transform origin-right" />
               </motion.div>
             );

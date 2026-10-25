@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   LayoutDashboard, GraduationCap, Sparkles, FolderGit2, Target,
-  MessageSquare, Settings, LogOut, Home, Menu, X, Eye, EyeOff,
+  MessageSquare, Settings, LogOut, Home, Menu, X,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/components/admin/AuthProvider';

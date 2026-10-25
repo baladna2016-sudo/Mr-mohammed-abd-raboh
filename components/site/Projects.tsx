@@ -5,19 +5,20 @@ import Link from 'next/link';
 import { ExternalLink, FolderGit2, Tag } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 
-type Project = {
+export type Project = {
   id: string | number;
   title: string;
-  description: string;
+  description?: string;
   image_url?: string | null;
   category?: string | null;
   project_url?: string | null;
+  display_order?: number;
 };
 
 function getProjectImage(project: Project): string {
   if (project.image_url) return project.image_url;
 
-  const searchText = `${project.title} ${project.category || ''} ${project.description}`.toLowerCase();
+  const searchText = `${project.title} ${project.category || ''} ${project.description || ''}`.toLowerCase();
 
   if (searchText.includes('تطبيق تعليمي') || searchText.includes('أندرويد') || searchText.includes('منصة تعليمية') || searchText.includes('تقنية رقمية')) {
     return '/android-app.jpg';
@@ -52,7 +53,6 @@ export default function Projects({ projects }: { projects: Project[] }) {
               whileHover={{ y: -8 }}
               className="group relative rounded-2xl overflow-hidden bg-card border border-border/60 shadow-sm hover:shadow-2xl hover:border-primary/30 transition-all"
             >
-              {/* Image */}
               <div className="relative h-52 overflow-hidden bg-secondary">
                 <img
                   src={getProjectImage(project)}
@@ -68,14 +68,15 @@ export default function Projects({ projects }: { projects: Project[] }) {
                 )}
               </div>
 
-              {/* Content */}
               <div className="p-6">
                 <h3 className="font-cairo text-lg font-bold text-foreground group-hover:text-primary transition-colors">
                   {project.title}
                 </h3>
-                <p className="text-sm text-muted-foreground mt-2 leading-relaxed line-clamp-3">
-                  {project.description}
-                </p>
+                {project.description && (
+                  <p className="text-sm text-muted-foreground mt-2 leading-relaxed line-clamp-3">
+                    {project.description}
+                  </p>
+                )}
                 {project.project_url && (
                   <Link
                     href={project.project_url}
